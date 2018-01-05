@@ -29,7 +29,10 @@ if(NOT DEVICE)
 set(DEVICE nRF52832)
 set(BOARD BOARD_PCA10036)
 set(SOFTDEVICE S132)
+set(SOFTDEVICE_VERSION 5.0.0)
 endif()
+
+set(BLE_API_VERSION 5)
 
 # Set build
 if(NOT CMAKE_BUILD_TYPE)
@@ -63,6 +66,17 @@ set(LIBRARIES log util trace timer scheduler button uart fifo fstorage experimen
 set(BLE_MODULES ble_advertising)
 set(BLE_SERVICES ble_nus)
 
+set(IPSTACK NRF_IPV6)
+set(IPV6_COMPONENTS icmp6)
+set(IOT
+		ble_6lowpan
+		context_manager
+		iot_timer
+		medium
+		)
+
+
+
 # Add nRF52 base support
 include(${BASE_LOCATION}/lib/nrf52-base.cmake)
 
@@ -77,6 +91,6 @@ target_link_libraries(${TARGET} ${LIBS})
 # Add post build commands
 include(${BASE_LOCATION}/lib/post-build.cmake)
 
-# Add JLink commands
-include(${BASE_LOCATION}/lib/jlink.cmake)
+# Add nrfjprog and JLink commands
+include(${BASE_LOCATION}/lib/nrfjprog.cmake)
 

@@ -1,7 +1,7 @@
 # nrf52-base
 
-STATUS: preliminary support, builds for the nRF52 family and S132 SoftDevice.  
-Commit 8b1612498a0af3ff86c388b101c0614f3d1ded92 working with old SDK. Current master isn't running correctly, probably a linker / location issue but haven't had time to fix as yet.
+STATUS: preliminary support for SDK v14.2.0, can be built for the nRF52 family and S132 SoftDevice. 
+Example project slightly broken. (FLASH_START not set for Softdevice S132 v5.0.0)  
 
 [![Build Status](https://travis-ci.org/ryankurte/nrf52-base.svg)](https://travis-ci.org/ryankurte/nrf52-base)
 
@@ -15,9 +15,10 @@ Commit 8b1612498a0af3ff86c388b101c0614f3d1ded92 working with old SDK. Current ma
 4. In the build directory, run `make` to build the example project
 
 ## TODO
- - [ ] support for new softdevices
+ - [ ] support for new softdevices (specify FLASH_START for them)
  - [ ] better getting started guide
- - [ ] integrate nrfjprog to simplify programming etc
+ - [X] integrate nrfjprog to simplify programming etc
+ - [ ] dependency handling of components
 
 ------
 

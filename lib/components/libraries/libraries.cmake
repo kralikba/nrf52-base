@@ -5,14 +5,10 @@
 set(NRF_LIB_SOURCES "")
 
 foreach(LIBRARY IN ITEMS ${LIBRARIES})
-	# Hacks for libraries that include things they shouldn't
-	if("${LIBRARY}" STREQUAL "timer")
-		# TODO: add other timer components if definitions exist
-		set(NRF_LIB_SOURCES 
-			${NRF_LIB_SOURCES} 
-			${CMAKE_CURRENT_LIST_DIR}/timer/app_timer.c
-			)
-		include_directories(${CMAKE_CURRENT_LIST_DIR}/timer)
+	# Call custom script if there is one; otherwise just include everything from that library
+	set(CUSTOM_SCRIPT "${CMAKE_CURRENT_LIST_DIR}/${LIBRARY}/${LIBRARY}.cmake")
+	if(EXISTS ${CUSTOM_SCRIPT})
+		include(${CUSTOM_SCRIPT})
 	else()
 		message("Added library: ${LIBRARY} at: ${CMAKE_CURRENT_LIST_DIR}/${LIBRARY}")
 		file(GLOB_RECURSE CURRENT_SOURCES ${CMAKE_CURRENT_LIST_DIR}/${LIBRARY}/*.c)

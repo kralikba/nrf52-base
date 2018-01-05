@@ -1,10 +1,11 @@
 #!/bin/bash
 # Get Nordic files, because their SDK license is not permissive.
 
-SDK_VERSION="12.2.0"
-SDK_CHECKSUM="f012efa"
-SDK_URL="https://www.nordicsemi.com/eng/nordic/download_resource/54291/51/16000157"
-SDK_FILE="nRF52_SDK_${SDK_VERSION}_${SDK_CHECKSUM}.zip"
+SDK_VERSION="14.2.0"
+SDK_CHECKSUM="17b948a"
+SDK_URL="http://www.nordicsemi.com/eng/nordic/download_resource/59011/67/60936953/116085"
+SDK_BASENAME="nRF5_SDK_${SDK_VERSION}_${SDK_CHECKSUM}"
+SDK_FILE="${SDK_BASENAME}.zip"
 
 WORKING_DIR=".sdk"
 
@@ -18,11 +19,15 @@ else
 	curl -o $WORKING_DIR/$SDK_FILE $SDK_URL
 fi
 
-echo "Extracting SDK"
-unzip -o -d $WORKING_DIR -q $WORKING_DIR/$SDK_FILE 
+if ! [ -f $WORKING_DIR/.unzipped ]
+then
+	echo "Extracting SDK"
+	unzip -o -d $WORKING_DIR -q $WORKING_DIR/$SDK_FILE 
+	touch $WORKING_DIR/.unzipped
+fi
 
 echo "Merging into project"
-cp -rf $WORKING_DIR/components lib/
-cp -rf $WORKING_DIR/documentation lib/
+cp -rf $WORKING_DIR/$SDK_BASENAME/{components,documentation} lib/
+cp -rf $WORKING_DIR/$SDK_BASENAME/external/* lib/components/libraries
 
 echo "Bootstrapping complete"

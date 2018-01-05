@@ -1,0 +1,6 @@
+define target hookpost-remote
+mon reset 0
+mon exec SetMonModeDebug=1
+mon exec SetMonModeVTableAddr=${FLASH_START}
+file "${CMAKE_CURRENT_BINARY_DIR}/${TARGET}"
+end

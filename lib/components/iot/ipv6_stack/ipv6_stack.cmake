@@ -1,0 +1,25 @@
+if(NOT IPV6_COMPONENTS)
+    set(IPV6_COMPONENTS dns6 icmp6 sntp_client tftp udp)
+endif()
+
+list(APPEND IPV6_COMPONENTS ipv6 pbuffer utils udp)
+list(REMOVE_DUPLICATES IPV6_COMPONENTS)
+
+foreach(LIBRARY IN ITEMS ${IPV6_COMPONENTS})
+    # Call custom script if there is one; otherwise just include everything from that library
+    set(CUSTOM_SCRIPT "${CMAKE_CURRENT_LIST_DIR}/${LIBRARY}/${LIBRARY}.cmake")
+    if(EXISTS ${CUSTOM_SCRIPT})
+        include(${CUSTOM_SCRIPT})
+    else()
+        message("Added IPv6 library: ${LIBRARY} at: ${CMAKE_CURRENT_LIST_DIR}/${LIBRARY}")
+        file(GLOB_RECURSE CURRENT_SOURCES ${CMAKE_CURRENT_LIST_DIR}/${LIBRARY}/*.c)
+        file(GLOB_RECURSE CURRENT_HEADERS ${CMAKE_CURRENT_LIST_DIR}/${LIBRARY}/*.h)
+        set(NRF_IOT_SOURCES ${NRF_IOT_SOURCES} ${CURRENT_SOURCES} ${CURRENT_HEADERS})
+        include_directories(${CMAKE_CURRENT_LIST_DIR}/${LIBRARY})
+        include_directories(${CMAKE_CURRENT_LIST_DIR}/${LIBRARY}/src)
+    endif()
+endforeach(LIBRARY IN ${IOT})
+
+file(GLOB_RECURSE CURRENT_SOURCES ${CMAKE_CURRENT_LIST_DIR}/include/*.h)
+set(NRF_IOT_SOURCES ${NRF_IOT_SOURCES} ${CURRENT_SOURCES})
+include_directories(${CMAKE_CURRENT_LIST_DIR}/include)

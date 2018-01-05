@@ -1,5 +1,7 @@
 # Serialization module
 
+if(DEFINED SERIALIZATION_LIBS)
+
 # Add source files
 
 # Application/codecs
@@ -31,3 +33,5 @@ file(GLOB COMMON_SOFTDEV_SRC ${CMAKE_CURRENT_LIST_DIR}/common/struct_ser/${SOFTD
 add_library(serialization ${COMMON_SRC} ${COMMON_SOFTDEV_SRC} ${CODEC_COMMON_SRC} ${CODEC_SOFTDEV_SRC} ${TRANSPORT_SRC} ${APP_HAL_SRC})
 
 set(LIBS ${LIBS} serialization)
+
+endif()
